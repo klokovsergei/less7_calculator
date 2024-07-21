@@ -4,7 +4,6 @@ import less7_calculator.model.ComplexNumber;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 
 import static less7_calculator.service.ComplexNumberService.getComplexNumber;
@@ -32,10 +31,6 @@ public class CalculatorService {
         else
             throw new RuntimeException("Операция не реализована или не поддерживается");
 //        return new ComplexNumber(0D,0D);
-    }
-    private static String prompt(String message) {
-        System.out.println(message);
-        return new Scanner(System.in).next();
     }
 
     public static Set<String> getOperation(){
