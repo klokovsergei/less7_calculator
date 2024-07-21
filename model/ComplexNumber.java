@@ -7,20 +7,24 @@ public class ComplexNumber {
         this.actualPart = actualPart;
         this.imaginaryPart = imaginaryPart;
     }
-    public ComplexNumber(double[] args){
-        this.actualPart = args[0];
-        this.imaginaryPart = args[1];
+    public ComplexNumber(ComplexNumber number){
+        this.actualPart = number.getActualPart();
+        this.imaginaryPart = number.getImaginaryPart();
     }
 
-    public double[] getComplexNumber() {
-        return new double[]{actualPart, imaginaryPart};
+    public double getActualPart() {
+        return actualPart;
+    }
+
+    public double getImaginaryPart() {
+        return imaginaryPart;
     }
 
     @Override
     public String toString() {
-        String operator = " + i" + imaginaryPart;
+        String operator = " + " + imaginaryPart + "i";
         if (imaginaryPart < 0)
-            operator = " - i" + -imaginaryPart;
+            operator = " - " + -imaginaryPart + "i";
         return actualPart + operator;
     }
 }

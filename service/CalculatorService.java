@@ -5,33 +5,49 @@ import less7_calculator.model.ComplexNumber;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+
+import static less7_calculator.service.ComplexNumberService.getComplexNumber;
 
 public class CalculatorService {
     private final static Map<String, Calculable> operations = new HashMap<>();
     static {
         operations.put("+", args -> {
-            double[] x = args[0].getComplexNumber();
-            double[] y = args[1].getComplexNumber();
+            double[] x = getComplexNumber(args[0]);
+            double[] y = getComplexNumber(args[1]);
             return new ComplexNumber(x[0] + y[0], x[1] + y[1]);
         });
-        operations.put("-", args -> new ComplexNumber(0D,0D));
-        operations.put("/", args -> new ComplexNumber(0D,0D));
+        operations.put("-", args -> {
+            double[] x = getComplexNumber(args[0]);
+            double[] y = getComplexNumber(args[1]);
+            return new ComplexNumber(x[0] - y[0], x[1] - y[1]);
+        });
+        operations.put("/", args -> divide(args[0], args[1]));
     }
 
-    private static double calculate() {
-        double operand1 = Double.parseDouble(prompt("Enter first number: "));
-        String operator = prompt("Enter math operation (+ - /): ");
-        double operand2 = Double.parseDouble(prompt("Enter second number: "));
-
+    public static ComplexNumber calculate(String operator, ComplexNumber... number) {
 
         if (operations.containsKey(operator))
-            return operations.get(operator).calculate(operand1, operand2);
+            return operations.get(operator).calculate(number[0], number[1]);
         else
             throw new RuntimeException("Операция не реализована или не поддерживается");
+//        return new ComplexNumber(0D,0D);
     }
     private static String prompt(String message) {
         System.out.println(message);
         return new Scanner(System.in).next();
+    }
+
+    public static Set<String> getOperation(){
+        return operations.keySet();
+    }
+
+    public static ComplexNumber divide(ComplexNumber... args){
+        double[] x = getComplexNumber(args[0]);
+        double[] y = getComplexNumber(args[1]);
+        double actualPart = (x[0]*y[0] + x[1]*y[1]) / (Math.pow(y[0], 2) + Math.pow(y[1], 2));
+        double imaginaryPart = (x[1]*y[0] - x[0]*y[1]) / (Math.pow(y[0], 2) + Math.pow(y[1], 2));
+        return new ComplexNumber(actualPart, imaginaryPart);
     }
 }
 interface Calculable{
